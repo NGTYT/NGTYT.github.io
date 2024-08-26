@@ -23,6 +23,7 @@
             color: #fff;
             z-index: 10;
             position: relative;
+            margin-bottom: 50px; /* Space for the footer */
         }
 
         h1 {
@@ -77,6 +78,18 @@
             left: 0;
             z-index: 1;
         }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background-color: #FF758C;
+            color: #fff;
+            font-size: 1rem;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -111,6 +124,8 @@
         Today and forever!</p>
         <button id="closePoemButton">Close</button>
     </div>
+
+    <footer>By Mishael and made by Shakeel</footer>
 
     <script>
         // Confetti effect
