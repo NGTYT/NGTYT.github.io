@@ -11,6 +11,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             height: 100vh;
             background: linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 100%);
             font-family: 'Arial', sans-serif;
@@ -32,6 +33,41 @@
             font-size: 1.5rem;
         }
 
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #FF758C;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #FF7EB3;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background: #fff;
+            color: #000;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .popup button {
+            margin-top: 10px;
+            background-color: #FF9A9E;
+            color: #fff;
+        }
+
         canvas {
             position: absolute;
             top: 0;
@@ -44,8 +80,17 @@
         <h1>Happy Anniversary joy &
           albert!</h1>
         <p>Wishing you a lifetime of love and happiness.</p>
+        <button id="showPoemButton">Read Poem</button>
     </div>
     <canvas id="confetti"></canvas>
+
+    <div id="poemPopup" class="popup">
+        <p>You make me smile,<br>
+        Every single day,<br>
+        I love you so much,<br>
+        More than words can say!</p>
+        <button id="closePoemButton">Close</button>
+    </div>
 
     <script>
         // Confetti effect
@@ -99,6 +144,19 @@
         }
 
         animateConfetti();
+
+        // Poem popup
+        const showPoemButton = document.getElementById('showPoemButton');
+        const poemPopup = document.getElementById('poemPopup');
+        const closePoemButton = document.getElementById('closePoemButton');
+
+        showPoemButton.addEventListener('click', () => {
+            poemPopup.style.display = 'block';
+        });
+
+        closePoemButton.addEventListener('click', () => {
+            poemPopup.style.display = 'none';
+        });
     </script>
 </body>
 </html>
