@@ -1,191 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Anniversary</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            height: 100vh;
-            background: linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 100%);
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-        }
-
-        .container {
-            text-align: center;
-            color: #fff;
-            z-index: 10;
-            position: relative;
-            margin-bottom: 50px; /* Space for the footer */
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin: 0;
-            padding: 0;
-        }
-
-        p {
-            font-size: 1.5rem;
-        }
-
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            background-color: #FF758C;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #FF7EB3;
-        }
-
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            background: #fff;
-            color: #000;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            z-index: 20;
-        }
-
-        .popup button {
-            margin-top: 10px;
-            background-color: #FF9A9E;
-            color: #fff;
-        }
-
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
-
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            background-color: #FF758C;
-            color: #fff;
-            font-size: 1rem;
-            z-index: 10;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Price Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f2f2f2;
+    }
+    .calculator {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      text-align: center;
+    }
+    input {
+      padding: 8px;
+      margin: 5px 0;
+      width: 80px;
+    }
+    button {
+      background-color: #2563eb;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #1e50ba;
+    }
+    .result {
+      margin-top: 15px;
+      font-size: 1.2em;
+      color: #333;
+    }
+    .row {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .row input {
+      margin: 5px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Happy Anniversary joy &
-          albert!</h1>
-        <p>Wishing you a lifetime of love and happiness.</p>
-        <button id="showPoemButton">Read Poem</button>
-    </div>
-    <canvas id="confetti"></canvas>
 
-    <div id="poemPopup" class="popup">
-        Roses are red,<br>
-        Violets are blue,<br>
-        I'm so lucky,<br>
-        To have parents like you!<br><br>
-            
-        You make me smile,<br>
-        Every single day,<br>
-        I love you so much,<br>
-        More than words can say!<br><br>
+<div class="calculator">
+  <h2>Price Calculator</h2>
+  <div id="inputRows">
+    <!-- Initial rows will be inserted here -->
+  </div>
+  <button onclick="addRow()">Add More Rows</button>
+  <button onclick="calculateTotal()">Calculate Total</button>
+  
+  <div class="result" id="totalResult">Total Price: --</div>
+</div>
 
-        Happy Anniversary,<br>
-        To the best parents ever,<br>
-        I hope you're happy,<br>
-        Today and forever!</p>
-        <button id="closePoemButton">Close</button>
-    </div>
+<script>
+  // Hardcoded price data instead of fetching from JSON file
+  const priceData = {
+    "1": 30,
+    "2": 50,
+    "3": 70
+  };
 
-    <footer>By Mishael </footer>
+  // Initialize with 5 rows
+  let rowCount = 0;
+  function addRow() {
+    if (rowCount >= 5) {
+      alert("Maximum 5 rows reached!");
+      return;
+    }
+    
+    rowCount++;
+    
+    const rowDiv = document.createElement('div');
+    rowDiv.classList.add('row');
+    rowDiv.id = `row-${rowCount}`;
+    rowDiv.innerHTML = `
+      <input type="number" id="code-${rowCount}" placeholder="Code" required>
+      <input type="number" id="quantity-${rowCount}" placeholder="Quantity (g)" required>
+      <span id="price-${rowCount}">Price: --</span>
+    `;
+    document.getElementById('inputRows').appendChild(rowDiv);
+  }
 
-    <script>
-        // Confetti effect
-        const canvas = document.getElementById('confetti');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+  // Function to calculate price for each row
+  function calculateRowPrice(code, quantity) {
+    if (priceData[code] && quantity > 0) {
+      return (priceData[code] * (quantity / 100)).toFixed(2);
+    }
+    return null;
+  }
 
-        const confettiColors = ['#FF9A9E', '#FAD0C4', '#FF758C', '#FF7EB3', '#FFB3B3'];
+  // Function to calculate total
+  function calculateTotal() {
+    let totalPrice = 0;
+    for (let i = 1; i <= rowCount; i++) {
+      const code = document.getElementById(`code-${i}`).value;
+      const quantity = parseFloat(document.getElementById(`quantity-${i}`).value);
+      const price = calculateRowPrice(code, quantity);
+      
+      if (price !== null) {
+        document.getElementById(`price-${i}`).textContent = `Price: ₹${price}`;
+        totalPrice += parseFloat(price);
+      } else {
+        document.getElementById(`price-${i}`).textContent = "Invalid code or quantity";
+      }
+    }
+    document.getElementById('totalResult').textContent = `Total Price: ₹${totalPrice.toFixed(2)}`;
+  }
 
-        function ConfettiParticle() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height - canvas.height;
-            this.size = Math.random() * 10 + 5;
-            this.color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-            this.speedY = Math.random() * 3 + 2;
-            this.speedX = Math.random() * 2 - 1;
-        }
+  // Add initial rows on page load
+  window.onload = () => {
+    for (let i = 0; i < 5; i++) addRow();
+  };
+</script>
 
-        ConfettiParticle.prototype.update = function() {
-            this.y += this.speedY;
-            this.x += this.speedX;
-
-            if (this.y > canvas.height) {
-                this.y = -this.size;
-                this.x = Math.random() * canvas.width;
-            }
-        };
-
-        ConfettiParticle.prototype.draw = function() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = this.color;
-            ctx.fill();
-        };
-
-        const confettiParticles = [];
-        for (let i = 0; i < 100; i++) {
-            confettiParticles.push(new ConfettiParticle());
-        }
-
-        function animateConfetti() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            confettiParticles.forEach(particle => {
-                particle.update();
-                particle.draw();
-            });
-
-            requestAnimationFrame(animateConfetti);
-        }
-
-        animateConfetti();
-
-        // Poem popup
-        const showPoemButton = document.getElementById('showPoemButton');
-        const poemPopup = document.getElementById('poemPopup');
-        const closePoemButton = document.getElementById('closePoemButton');
-
-        showPoemButton.addEventListener('click', () => {
-            poemPopup.style.display = 'block';
-        });
-
-        closePoemButton.addEventListener('click', () => {
-            poemPopup.style.display = 'none';
-        });
-    </script>
 </body>
 </html>
